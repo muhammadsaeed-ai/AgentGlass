@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080f1b">
+<meta name="description" content="A self-contained animated walkthrough of AgentGlass: record agent runs, normalize events, time spans, redact sensitive values, store locally, inspect traces, and understand the roadmap.">
+<title>AgentGlass — Animated Explainer</title>
+<style>
+:root{color-scheme:dark;--bg:#070d17;--panel:#0d1726;--panel2:#111e30;--line:#283a52;--text:#edf5ff;--muted:#8fa3bd;--cyan:#64e8d0;--blue:#6bdcff;--violet:#a99cff;--amber:#ffd08b}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 75% 0%,#12273a 0,transparent 34rem),linear-gradient(145deg,#070d17,#0a1220 56%,#131126);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}
+button,a{font:inherit}
+button{cursor:pointer}
+.shell{max-width:1240px;margin:auto;padding:24px 22px 42px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:4px 2px 20px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:-.02em}
+.mark{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#113b45,#14213a);border:1px solid #3fa89f;color:#8ff8e0;box-shadow:0 0 28px #3dd4cd14}
+.mark svg{width:25px}
+.brand small{display:block;font-size:10px;letter-spacing:.17em;color:#7f94b0;font-weight:650;margin-top:1px}
+.topmeta{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.pill{border:1px solid #30445d;border-radius:99px;padding:6px 11px;color:#a9bad0;background:#0b1421;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+.pill.live{border-color:#2a756b;color:#98f2dc;background:#0b2926}
+.player{overflow:hidden;border:1px solid #344660;border-radius:22px;background:#080f1b;box-shadow:0 28px 80px #0005;position:relative}
+.stage{position:relative;aspect-ratio:16/9;min-height:360px;overflow:hidden;background:linear-gradient(135deg,#07111e,#0d1727 55%,#19152d)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(#8296b40a 1px,transparent 1px),linear-gradient(90deg,#8296b40a 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(to bottom,#000,transparent 92%)}
+.aurora{position:absolute;width:36vw;height:36vw;max-width:520px;max-height:520px;right:-5%;top:-20%;background:#4ad5ec17;filter:blur(42px);border-radius:50%;animation:breathe 6s ease-in-out infinite}
+.stagehead{position:absolute;left:3.4%;right:3.4%;top:5.2%;display:flex;justify-content:space-between;align-items:center;gap:18px;z-index:2}
+.chapter{font-size:10px;text-transform:uppercase;letter-spacing:.17em;color:var(--cyan);font-weight:750}
+.chapterCount{font-size:11px;color:#8499b5}
+.scene{position:absolute;inset:0;padding:10% 4% 5%;opacity:0;visibility:hidden;transform:translateY(10px) scale(.995);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.7,.2,1),visibility .6s;display:flex;flex-direction:column}
+.scene.active{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.scene h1{font-size:clamp(21px,3.1vw,42px);line-height:1.12;letter-spacing:-.04em;margin:0 0 10px;font-weight:800;max-width:920px}
+.scene .lede{margin:0;color:#99abc3;font-size:clamp(11px,1.25vw,16px);max-width:890px}
+.visual{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin-top:3.2%;position:relative}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,1.5vw,20px);width:100%;align-items:center}
+.node{border:1px solid #344b66;border-radius:15px;background:linear-gradient(150deg,#12253a,#0c1928);padding:clamp(10px,1.8vw,22px);min-height:clamp(72px,9vw,120px);position:relative;box-shadow:0 12px 24px #0002;animation:float 4.2s ease-in-out infinite}
+.node:nth-child(2){animation-delay:-.8s}.node:nth-child(3){animation-delay:-1.7s}.node:nth-child(4){animation-delay:-2.7s}
+.node .num{font:700 10px ui-monospace,monospace;color:#718aa7;letter-spacing:.12em}
+.node h3{font-size:clamp(11px,1.4vw,17px);margin:9px 0 3px}.node p{font-size:clamp(9px,1vw,12px);color:#8ea6c0;margin:0}
+.node.cyan{border-color:#367f8c}.node.violet{border-color:#655f9a}.node.green{border-color:#337d6f}
+.connector{position:absolute;top:50%;right:-17px;width:15px;height:2px;background:linear-gradient(90deg,var(--cyan),var(--violet));z-index:2}.connector:after{content:"";position:absolute;right:0;top:-3px;width:7px;height:7px;border-top:2px solid var(--violet);border-right:2px solid var(--violet);transform:rotate(45deg)}
+.note{border:1px solid #2d405a;background:#0a1422cc;padding:12px 16px;border-radius:12px;color:#b6c8dd;font-size:clamp(10px,1.1vw,14px);margin-top:3.1%;display:flex;align-items:center;gap:10px}
+.dot{width:7px;height:7px;display:inline-block;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px #58ebd4;flex:none}
+.timeline{width:100%;display:grid;gap:clamp(5px,.75vw,10px)}
+.event{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:12px;align-items:center;padding:clamp(7px,1.25vw,13px) 14px;border-radius:10px;background:#101f30;border:1px solid #263d57;animation:slideIn .65s both}
+.event:nth-child(2){animation-delay:.10s}.event:nth-child(3){animation-delay:.20s}.event:nth-child(4){animation-delay:.3s}.event:nth-child(5){animation-delay:.4s}
+.seq{font:700 11px ui-monospace,monospace;color:#6ce8d1}.event strong{display:block;font:600 clamp(10px,1.2vw,14px) ui-monospace,monospace;overflow-wrap:anywhere}.event small{display:block;color:#8197b2;font-size:clamp(9px,.9vw,11px)}
+.tag{font:700 9px ui-monospace,monospace;letter-spacing:.07em;color:#b4c5db;border:1px solid #344964;border-radius:6px;padding:5px 7px;white-space:nowrap}
+.schema{width:100%;display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(10px,1.8vw,24px);align-items:stretch}
+.codecard,.sidecard,.terminal,.treecard,.shieldcard{background:#091421;border:1px solid #30445e;border-radius:14px;overflow:hidden;min-width:0;box-shadow:0 15px 30px #0002}
+.cardtop{padding:10px 14px;background:#111e30;border-bottom:1px solid #293d57;display:flex;justify-content:space-between;gap:10px;color:#93a9c4;font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.codebody{padding:clamp(11px,1.6vw,21px);font:clamp(9px,1.15vw,13px)/1.9 ui-monospace,SFMono-Regular,Consolas,monospace;color:#91b7d0;overflow-wrap:anywhere}
+.key{color:#79ddff}.value{color:#b8f2d9}.valviolet{color:#c5b6ff}.numcolor{color:#ffd08b}
+.sidecard{padding:clamp(12px,1.7vw,21px);display:flex;flex-direction:column;gap:clamp(7px,1vw,13px)}
+.sidecard h3{font-size:clamp(11px,1.4vw,17px);margin:0}.mini{border:1px solid #2c435c;border-radius:9px;background:#0d1c2b;padding:9px 11px}.mini b{color:#a1eedd;font-size:clamp(10px,1.05vw,13px);display:block}.mini span{font-size:clamp(9px,.95vw,11px);color:#8da3bc}
+.hierarchy{width:100%;display:grid;gap:10px}.parent{border:1px solid #675e9d;background:#171a30;padding:12px 15px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:12px}.parent strong{font-size:clamp(11px,1.3vw,15px)}.parent span{font-size:10px;color:#aaa4de}.children{margin-left:5%;padding-left:20px;border-left:2px solid #426c81;display:grid;gap:10px}.child{border:1px solid #31576e;background:#0d202e;border-radius:10px;padding:10px 14px;display:grid;grid-template-columns:minmax(0,1fr) minmax(60px,30%);gap:14px;align-items:center}.child strong{font-size:clamp(10px,1.2vw,14px);display:block}.child small{font-size:clamp(9px,.95vw,11px);color:#87a4bb}.bar{height:8px;background:#1f344a;border-radius:10px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue));border-radius:10px;width:65%;animation:grow 2.2s ease-in-out infinite alternate}.child:nth-child(2) .bar i{width:40%;animation-delay:-1.1s;background:linear-gradient(90deg,#8f87ff,#c5a8ff)}
+.redact{width:100%;display:grid;grid-template-columns:1fr 54px 1fr;gap:clamp(8px,1.4vw,18px);align-items:center}.redact .shieldcard{padding:0 0 7px}.redact .cardtop{font-size:9px}.fieldlist{padding:clamp(10px,1.5vw,18px);display:grid;gap:12px;font:clamp(9px,1vw,12px) ui-monospace,monospace}.field{overflow-wrap:anywhere}.bad{color:#ffabb5}.good{color:#9cf0d5}.redacted{background:#1d4339;padding:3px 5px;border-radius:5px}.arrow{color:var(--cyan);font-size:clamp(19px,3vw,38px);text-align:center;animation:pulse 1.2s ease-in-out infinite}
+.twocol{display:grid;grid-template-columns:.72fr 1.28fr;gap:clamp(10px,1.8vw,24px);width:100%;align-items:stretch}
+.localbox{border:1px solid #39877d;background:linear-gradient(150deg,#102824,#0c1b22);border-radius:14px;padding:clamp(13px,2vw,25px);display:flex;flex-direction:column;gap:12px;justify-content:center}
+.fileicon{width:45px;height:51px;border:1px solid #59ceb3;border-radius:7px;position:relative;display:grid;place-items:center;color:#93f4db;font:800 10px ui-monospace,monospace;background:#143630}.fileicon:after{content:"";position:absolute;right:-1px;top:-1px;width:12px;height:12px;border-left:1px solid #59ceb3;border-bottom:1px solid #59ceb3;background:#0b1a1f}.localbox h3{font-size:clamp(12px,1.5vw,18px);margin:0}.localbox p{margin:0;color:#91b9b1;font-size:clamp(9px,1vw,12px)}.checkline{color:#afddd0;font-size:clamp(9px,1vw,12px)}
+.terminal{background:#070d17}.terminal .cardtop{background:#121d2f}.termrows{padding:clamp(11px,1.7vw,20px);font:clamp(9px,1vw,12px)/2 ui-monospace,monospace;overflow-wrap:anywhere}.prompt{color:#64ebce}.cmd{color:#e2ecfa}.out{color:#86a0bd}.ok{color:#9af0d4}.violetout{color:#c2b5ff}.blueout{color:#90e5ff}
+.statusgrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.8vw,24px);width:100%}.statuscard{border-radius:14px;overflow:hidden;border:1px solid #3a8576;background:#0d211e}.statuscard.planned{border-color:#655f95;background:#151629}.statushead{padding:12px 16px;font-size:clamp(10px,1.15vw,14px);font-weight:800;letter-spacing:.045em;background:#12322b;color:#b9f7e5}.planned .statushead{background:#24223e;color:#d0c8ff}.checklist{padding:clamp(12px,1.8vw,22px);display:grid;gap:clamp(6px,.9vw,12px);font-size:clamp(9px,1.1vw,13px);color:#c7d7e8}.planned .checklist{color:#bbb9dc}.ending{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:12px}.endingMark{width:68px;height:68px;border-radius:22px;display:grid;place-items:center;border:1px solid #398c88;background:linear-gradient(145deg,#103a41,#191b37);color:#9af8e1;box-shadow:0 0 45px #45d7d522;animation:float 3.2s ease-in-out infinite}.ending h2{font-size:clamp(19px,2.6vw,32px);margin:0;letter-spacing:-.035em}.ending p{max-width:620px;color:#94a9c3;margin:0;font-size:clamp(11px,1.2vw,15px)}
+.controls{border-top:1px solid #2a3c53;padding:16px 18px 14px;background:#09121f}
+.controlrow{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.controlbtn{border:1px solid #354a64;border-radius:10px;padding:8px 12px;background:#0e1b2c;color:#e2efff;font-size:12px;font-weight:650;display:inline-flex;align-items:center;gap:7px;transition:background .2s,border-color .2s,transform .2s}
+.controlbtn:hover{border-color:#55cdbf;background:#132b36}.controlbtn:active{transform:scale(.98)}
+.controlbtn.primary{background:#143831;border-color:#2d8c78;color:#bffbed;min-width:96px;justify-content:center}
+.clock{font:11px ui-monospace,monospace;color:#92a7c0;min-width:75px}
+.progresswrap{height:5px;flex:1;min-width:120px;background:#1e2b40;border-radius:10px;overflow:hidden}
+.progress{height:100%;width:0;background:linear-gradient(90deg,#53e9c9,#65d8ff,#a594ff);border-radius:10px;transition:width .1s linear}
+.chapters{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+.chapterbtn{border:1px solid transparent;border-radius:8px;padding:6px 9px;background:transparent;color:#8096b1;font-size:10px;text-align:left}
+.chapterbtn:hover{background:#101e30;color:#d6e7f9}.chapterbtn.active{border-color:#2d8176;background:#102b2a;color:#a6f4df}
+.detailrow{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:20px}
+.panel{border:1px solid #293c54;background:#0b1421cc;border-radius:15px;padding:17px 19px}
+.panel h2{font-size:13px;letter-spacing:.02em;margin:0 0 8px}
+.panel p,.panel li{color:#91a5bf;font-size:12px}
+.panel p{margin:0}.panel ul{margin:9px 0 0;padding-left:17px}.panel li+li{margin-top:5px}
+details{margin-top:20px;border:1px solid #293c54;border-radius:14px;background:#0b1421cc;padding:0 16px}
+summary{cursor:pointer;padding:14px 0;font-size:12px;font-weight:700;color:#cad8ea}
+.script{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 0 15px}
+.script article{padding:12px;border:1px solid #25374f;border-radius:10px;background:#0c1725}
+.script h3{font-size:11px;margin:0 0 6px;color:#9ef0dc}.script p{font-size:11px;color:#8fa4be;margin:0}
+.footer{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:18px 3px 0;color:#7185a0;font-size:10px;flex-wrap:wrap}.footer a{color:#8fe6d0;text-decoration:none}.footer a:hover{text-decoration:underline}
+@keyframes breathe{50%{transform:translate(-4%,4%) scale(1.08);opacity:.7}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse{50%{opacity:.5;transform:scale(.96)}}
+@keyframes grow{from{transform:scaleX(.85);transform-origin:left}to{transform:scaleX(1);transform-origin:left}}
+@media(max-width:760px){.shell{padding:12px 10px 24px}.topbar{align-items:flex-start}.topmeta{max-width:150px}.stage{min-height:340px}.scene{padding:14% 4% 4%}.scene .lede{line-height:1.35}.detailrow{grid-template-columns:1fr}.controlrow{gap:7px}.controlbtn{padding:7px 9px}.pill{font-size:9px}.node{padding:8px;min-height:80px}.node p{line-height:1.3}.tag{display:none}.script{grid-template-columns:1fr}.event{grid-template-columns:28px minmax(0,1fr) auto;padding:8px}.seq{font-size:9px}.schema{grid-template-columns:1fr 0.8fr}.sidecard{gap:5px;padding:9px}.mini{padding:6px}.mini span{line-height:1.2}.footer{line-height:1.5}}
+@media(max-width:480px){.stage{min-height:300px}.stagehead{top:4%}.scene h1{font-size:21px}.scene .lede{font-size:10px}.scene{padding-top:18%}.node h3{font-size:10px}.node .num{font-size:8px}.node p{font-size:8px}.flow{gap:5px}.node{padding:7px 5px;min-height:75px}.connector{right:-7px;width:6px}.schema{grid-template-columns:1fr}.sidecard{display:none}.child{padding:7px;grid-template-columns:1fr 28%}.redact{grid-template-columns:1fr 16px 1fr}.fieldlist{padding:8px;font-size:8px}.arrow{font-size:16px}.twocol{grid-template-columns:.7fr 1.3fr}.localbox{padding:9px;gap:7px}.checkline{line-height:1.25}.termrows{padding:9px;font-size:8px}.statushead{padding:9px}.checklist{padding:9px 10px;gap:7px}.panel{padding:13px}.controlbtn{font-size:10px}.clock{min-width:60px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar">
+  <div class="brand"><div class="mark" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none"><path d="M3 14h5l4-8 5 16 4-8h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>AgentGlass<small>ANIMATED EXPLAINER</small></div></div>
+  <div class="topmeta"><span class="pill">56 seconds</span><span class="pill live"><span class="dot"></span> Synthetic data</span></div>
+</header>
+<main>
+<section class="player" aria-label="AgentGlass animated explainer player">
+<div class="stage" id="stage">
+<div class="grid"></div><div class="aurora"></div>
+<div class="stagehead"><span class="chapter" id="chapterLabel">01 / THE PROBLEM</span><span class="chapterCount" id="chapterCount">CHAPTER 1 OF 7</span></div>
+
+<section class="scene active" data-title="The problem" data-time="8" aria-hidden="false">
+<h1>A final answer hides the path.</h1><p class="lede">An agent can call models, run tools, retry work, and fail before it responds.</p>
+<div class="visual"><div class="flow">
+<div class="node cyan"><span class="num">STEP 01</span><h3>Model</h3><p>Request / response</p><span class="connector"></span></div>
+<div class="node violet"><span class="num">STEP 02</span><h3>Tool call</h3><p>Search / API / function</p><span class="connector"></span></div>
+<div class="node green"><span class="num">STEP 03</span><h3>More steps</h3><p>Retries / outputs / errors</p><span class="connector"></span></div>
+<div class="node green"><span class="num">VISIBLE RESULT</span><h3>Final answer</h3><p>Not the full execution history</p></div>
+</div></div>
+<div class="note"><span class="dot"></span><span>AgentGlass records the observable path so builders can inspect what ran, when, and which step failed.</span></div>
+</section>
+
+<section class="scene" data-title="Record the trace" data-time="8" aria-hidden="true">
+<h1>Turn activity into an event timeline.</h1><p class="lede">Your application records the events it can actually observe.</p>
+<div class="visual"><div class="timeline">
+<div class="event"><span class="seq">000</span><div><strong>run.started</strong><small>Recorder initialized · local metadata</small></div><span class="tag">START</span></div>
+<div class="event"><span class="seq">001</span><div><strong>model.request</strong><small>Explicit model-call event supplied by the application</small></div><span class="tag">MODEL</span></div>
+<div class="event"><span class="seq">002</span><div><strong>tool.started · docs.search</strong><small>Observed tool name and optional input metadata</small></div><span class="tag">TOOL</span></div>
+<div class="event"><span class="seq">003</span><div><strong>tool.completed</strong><small>Result metadata and measured elapsed time</small></div><span class="tag">RESULT</span></div>
+<div class="event"><span class="seq">004</span><div><strong>run.completed</strong><small>Terminal event closes the run</small></div><span class="tag">END</span></div>
+</div></div>
+<div class="note"><span class="dot"></span><span>The SDK records events passed by your code. It does not automatically intercept every provider or tool.</span></div>
+</section>
+
+<section class="scene" data-title="Normalize events" data-time="8" aria-hidden="true">
+<h1>Every event has a predictable shape.</h1><p class="lede">A versioned contract makes traces easier to validate, store, and compare.</p>
+<div class="visual"><div class="schema">
+<div class="codecard"><div class="cardtop"><span>TraceEvent · schema 1.0</span><span>JSON</span></div><div class="codebody">
+<div>{</div><div>&nbsp;&nbsp;<span class="key">"schema_version"</span>: <span class="value">"1.0"</span>,</div><div>&nbsp;&nbsp;<span class="key">"run_id"</span>: <span class="valviolet">"run_demo"</span>,</div><div>&nbsp;&nbsp;<span class="key">"sequence"</span>: <span class="numcolor">3</span>,</div><div>&nbsp;&nbsp;<span class="key">"timestamp"</span>: <span class="value">"2026-01-02T03:04:05Z"</span>,</div><div>&nbsp;&nbsp;<span class="key">"event_type"</span>: <span class="valviolet">"tool.completed"</span>,</div><div>&nbsp;&nbsp;<span class="key">"status"</span>: <span class="value">"ok"</span></div><div>}</div>
+</div></div>
+<div class="sidecard"><h3>Why these fields matter</h3><div class="mini"><b>run_id</b><span>Groups events in a run</span></div><div class="mini"><b>sequence</b><span>Preserves append order</span></div><div class="mini"><b>timestamp</b><span>Timezone-aware event time</span></div><div class="mini"><b>parent_event_id</b><span>Links related start/end events</span></div></div>
+</div></div>
+<div class="note"><span class="dot"></span><span>Invalid event types, schema versions, timestamps, and durations are rejected instead of silently accepted.</span></div>
+</section>
+
+<section class="scene" data-title="Time and relationships" data-time="8" aria-hidden="true">
+<h1>See which step took time.</h1><p class="lede">Spans and tool events carry duration and links to their start event.</p>
+<div class="visual"><div class="hierarchy">
+<div class="parent"><strong>run · knowledge_lookup</strong><span>FULL LIFECYCLE</span></div>
+<div class="children">
+<div class="child"><div><strong>span · retrieve_documents</strong><small>Parent link ties the terminal event to its start</small></div><div class="bar"><i></i></div></div>
+<div class="child"><div><strong>tool · docs.search</strong><small>Input and output metadata may be captured</small></div><div class="bar"><i></i></div></div>
+</div>
+</div></div>
+<div class="note"><span class="dot"></span><span>Durations measure the instrumented operation. They are not benchmark results, and token costs are not fabricated.</span></div>
+</section>
+
+<section class="scene" data-title="Privacy before storage" data-time="8" aria-hidden="true">
+<h1>Redact before the event is stored.</h1><p class="lede">The default redactor masks common sensitive keys and recognizable token/email patterns.</p>
+<div class="visual"><div class="redact">
+<div class="shieldcard"><div class="cardtop">Incoming example</div><div class="fieldlist"><div class="field"><span class="key">"api_key"</span>: <span class="bad">"sk-demo-secret..."</span></div><div class="field"><span class="key">"email"</span>: <span class="bad">"person@example.test"</span></div><div class="field"><span class="key">"status"</span>: <span class="good">"ok"</span></div></div></div>
+<div class="arrow" aria-hidden="true">→</div>
+<div class="shieldcard"><div class="cardtop">Before persistence</div><div class="fieldlist"><div class="field"><span class="key">"api_key"</span>: <span class="good redacted">"[REDACTED]"</span></div><div class="field"><span class="key">"email"</span>: <span class="good redacted">"[REDACTED]"</span></div><div class="field"><span class="key">"status"</span>: <span class="good">"ok"</span></div></div></div>
+</div></div>
+<div class="note"><span style="color:var(--amber)">!</span><span>Redaction is best-effort, not a complete DLP guarantee. Avoid capturing secrets at source and review traces before sharing.</span></div>
+</section>
+
+<section class="scene" data-title="Local storage and CLI" data-time="8" aria-hidden="true">
+<h1>Keep the trace local. Inspect it from the CLI.</h1><p class="lede">Use an in-memory store for tests or append structured events to a JSON Lines file.</p>
+<div class="visual"><div class="twocol">
+<div class="localbox"><div class="fileicon">JSONL</div><h3>traces/demo.jsonl</h3><p>One event per line · UTF-8 · local disk</p><div class="checkline">✓ Structured run IDs</div><div class="checkline">✓ Ordered event sequence</div><div class="checkline">✓ No hosted collector in this MVP</div></div>
+<div class="terminal"><div class="cardtop"><span>Terminal / local inspection</span><span>OFFLINE</span></div><div class="termrows"><div><span class="prompt">$</span> <span class="cmd">agentglass demo --output traces/demo.jsonl</span></div><div><span class="prompt">$</span> <span class="cmd">agentglass inspect traces/demo.jsonl</span></div><div class="out">SEQ&nbsp; EVENT TYPE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; STATUS</div><div class="ok">000&nbsp; run.started&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; started</div><div class="violetout">001&nbsp; model.request&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ok</div><div class="blueout">002&nbsp; tool.completed&nbsp;&nbsp;&nbsp;&nbsp; ok</div><div class="ok">003&nbsp; run.completed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; completed</div></div></div>
+</div></div>
+<div class="note"><span class="dot"></span><span>Also available: agentglass validate PATH and agentglass summary PATH. The demo uses synthetic data and calls no external model API.</span></div>
+</section>
+
+<section class="scene" data-title="Shipped vs. planned" data-time="8" aria-hidden="true">
+<h1>A real tracing core. A clear roadmap.</h1><p class="lede">Implemented features are clearly separated from future work.</p>
+<div class="visual"><div class="statusgrid">
+<div class="statuscard"><div class="statushead">✓ SHIPPED IN THIS REPOSITORY</div><div class="checklist"><div>✓ Python run/span/tool recorder</div><div>✓ Versioned event schema + validation</div><div>✓ Redaction + memory / JSONL stores</div><div>✓ CLI inspect / validate / summary</div><div>✓ Unit tests + Python 3.11 / 3.12 CI</div></div></div>
+<div class="statuscard planned"><div class="statushead">○ PLANNED — NOT YET SHIPPED</div><div class="checklist"><div>○ Interactive dashboard using real trace files</div><div>○ Tested framework-specific adapters</div><div>○ Trusted token / cost attribution</div><div>○ Hosted collector after a security review</div></div></div>
+</div></div>
+<div class="note"><span class="dot"></span><span>Next step: instrument one real workflow and inspect the events it produces. Start with the offline demo.</span></div>
+</section>
+</div>
+<div class="controls">
+<div class="controlrow">
+<button class="controlbtn primary" id="playBtn" type="button" aria-label="Pause animation">Ⅱ Pause</button>
+<button class="controlbtn" id="restartBtn" type="button" aria-label="Restart animation">↺ Restart</button>
+<button class="controlbtn" id="prevBtn" type="button" aria-label="Previous chapter">← Back</button>
+<button class="controlbtn" id="nextBtn" type="button" aria-label="Next chapter">Next →</button>
+<span class="clock" id="clock" aria-live="off">00:00 / 00:56</span>
+<div class="progresswrap" role="progressbar" aria-label="Explainer progress" aria-valuemin="0" aria-valuemax="56" aria-valuenow="0" id="progressWrap"><div class="progress" id="progress"></div></div>
+</div>
+<nav class="chapters" aria-label="Explainer chapters" id="chapters"></nav>
+</div>
+</section>
+
+<section class="detailrow">
+<div class="panel"><h2>What this explainer demonstrates</h2><p>The implemented Python SDK records application-provided observations; it stores normalized event records locally; the CLI inspects, validates, and summarizes traces. Examples shown on-screen are synthetic illustrations, not production metrics.</p></div>
+<div class="panel"><h2>Data and implementation boundaries</h2><p>Redaction is pattern-based best effort. The library makes no network calls itself. The browser dashboard, automatic framework adapters, hosted ingestion, and measured token-cost views remain roadmap items.</p></div>
+</section>
+
+<details>
+<summary>Read the full narration / scene notes</summary>
+<div class="script">
+<article><h3>01 — The problem</h3><p>AI agents do more than generate a final answer. They may call language models, invoke tools, retry operations, and fail between steps. Without a recorded history, the final answer alone cannot show how the run unfolded.</p></article>
+<article><h3>02 — Record the trace</h3><p>AgentGlass lets application code record observable run lifecycle events, model request or response metadata, tool starts and completions, outputs, and failures. It records what the application explicitly supplies rather than automatically intercepting every provider.</p></article>
+<article><h3>03 — Normalize the evidence</h3><p>Every trace event uses a versioned schema containing an event ID, run ID, sequence number, timezone-aware timestamp, type, status, and attributes. Optional parent links connect related start and terminal events. Invalid records are rejected by validation.</p></article>
+<article><h3>04 — Timing and relationships</h3><p>Context managers time instrumented operations and connect completion events to their start events. This supports inspection of step durations and relationships. These are measured operation times, not performance benchmarks; cost and token data are not invented when provider usage is unavailable.</p></article>
+<article><h3>05 — Privacy before persistence</h3><p>Before storage, the default redactor masks common secret-bearing keys, recognizable token patterns, and email addresses, and bounds payload sizes. No pattern-based system can guarantee detection of every secret. Avoid collecting sensitive data where possible and review exports before sharing.</p></article>
+<article><h3>06 — Local storage and CLI</h3><p>AgentGlass supports an in-memory store for tests and a local append-only JSONL store. The CLI can generate an offline synthetic trace, inspect events, validate the file, and summarize counts per run. The demo makes no external model call.</p></article>
+<article><h3>07 — Shipped versus planned</h3><p>The current repository includes the Python tracing core, event contract, local stores, redaction, CLI, tests, and CI. A live dashboard, tested framework adapters, provider-backed token and cost attribution, and hosted ingestion are future goals, not shipped capabilities.</p></article>
+</div>
+</details>
+</main>
+<footer class="footer"><span>AgentGlass · Observe what happened. Trace what failed. Keep control of your data.</span><a href="https://github.com/muhammadsaeed-ai/AgentGlass">View source repository ↗</a></footer>
+</div>
+<script>
+(function(){
+ const scenes=Array.from(document.querySelectorAll(".scene"));
+ const names=scenes.map(s=>s.dataset.title);
+ const labels=["01 / THE PROBLEM","02 / RECORD THE TRACE","03 / NORMALIZE EVENTS","04 / TIME & RELATIONSHIPS","05 / PRIVACY BEFORE STORE","06 / LOCAL INSPECTION","07 / SHIPPED VS. PLANNED"];
+ const duration=8000,total=duration*scenes.length;
+ const playBtn=document.getElementById("playBtn");
+ const restartBtn=document.getElementById("restartBtn");
+ const prevBtn=document.getElementById("prevBtn");
+ const nextBtn=document.getElementById("nextBtn");
+ const clock=document.getElementById("clock");
+ const progress=document.getElementById("progress");
+ const progressWrap=document.getElementById("progressWrap");
+ const chapterLabel=document.getElementById("chapterLabel");
+ const chapterCount=document.getElementById("chapterCount");
+ const chapters=document.getElementById("chapters");
+ let elapsed=0,last=0,raf=0,running=false,current=-1;
+ const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ function fmt(ms){const sec=Math.floor(ms/1000);return String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")}
+ function show(index){
+   index=(index+scenes.length)%scenes.length;
+   if(current===index)return;
+   current=index;
+   scenes.forEach((scene,i)=>{const active=i===index;scene.classList.toggle("active",active);scene.setAttribute("aria-hidden",active?"false":"true")});
+   chapterLabel.textContent=labels[index];chapterCount.textContent="CHAPTER "+(index+1)+" OF "+scenes.length;
+   Array.from(chapters.children).forEach((b,i)=>{b.classList.toggle("active",i===index);b.setAttribute("aria-current",i===index?"step":"false")});
+ }
+ function render(){
+   const bounded=Math.max(0,Math.min(elapsed,total));
+   const index=Math.min(scenes.length-1,Math.floor(bounded/duration));
+   show(index);
+   progress.style.width=(bounded/total*100)+"%";
+   progressWrap.setAttribute("aria-valuenow",String(Math.floor(bounded/1000)));
+   clock.textContent=fmt(bounded)+" / "+fmt(total);
+ }
+ function tick(now){
+   if(!running)return;
+   if(!last)last=now;
+   elapsed+=now-last;last=now;
+   if(elapsed>=total){elapsed=total;running=false;last=0;render();playBtn.textContent="▶ Replay";playBtn.setAttribute("aria-label","Replay animation");return}
+   render();raf=requestAnimationFrame(tick);
+ }
+ function play(){if(elapsed>=total)elapsed=0;running=true;last=0;playBtn.textContent="Ⅱ Pause";playBtn.setAttribute("aria-label","Pause animation");cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}
+ function pause(){running=false;last=0;cancelAnimationFrame(raf);playBtn.textContent="▶ Play";playBtn.setAttribute("aria-label","Play animation")}
+ function go(index){elapsed=Math.max(0,Math.min(total-1,index*duration));render();if(!running){playBtn.textContent="▶ Play";playBtn.setAttribute("aria-label","Play animation")}}
+ names.forEach((name,i)=>{const b=document.createElement("button");b.type="button";b.className="chapterbtn";b.textContent=String(i+1).padStart(2,"0")+"  "+name;b.addEventListener("click",()=>{go(i);play()});chapters.appendChild(b)});
+ playBtn.addEventListener("click",()=>running?pause():play());
+ restartBtn.addEventListener("click",()=>{pause();elapsed=0;render();play()});
+ prevBtn.addEventListener("click",()=>{go(Math.max(0,current-1));play()});
+ nextBtn.addEventListener("click",()=>{go(Math.min(scenes.length-1,current+1));play()});
+ progressWrap.addEventListener("click",e=>{const r=progressWrap.getBoundingClientRect();const ratio=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));elapsed=ratio*total;render();play()});
+ document.addEventListener("visibilitychange",()=>{if(document.hidden&&running)pause()});
+ if(reduce){elapsed=0;render();playBtn.textContent="▶ Play";playBtn.setAttribute("aria-label","Play animation");}
+ else{render();play();}
+})();
+</script>
+</body>
+</html>

@@ -63,6 +63,30 @@
 
 <p align="center"><sub>Illustrative UI concept using synthetic events — not a shipped web dashboard. The implemented interface today is the Python SDK and command-line inspector.</sub></p>
 
+## ▶ Watch the 56-second explainer
+
+See the complete story as a looping motion graphic: why agent traces matter, how events are recorded and normalized, how spans are timed, where redaction happens, how local JSONL storage and CLI inspection work, and which capabilities are implemented versus planned.
+
+<p align="center">
+  <img src="assets/readme/agentglass-explainer.svg" alt="Animated seven-scene AgentGlass explainer covering agent tracing, event schema, span timing, best-effort redaction, local storage, CLI inspection, and project status" width="100%" />
+</p>
+
+<p align="center">
+  <a href="docs/agentglass-explainer.html"><strong>Open the interactive explainer</strong></a> · Play / pause · Restart · Chapter navigation · Progress control · Full scene notes
+</p>
+
+The self-contained player uses HTML, CSS, and JavaScript only—no external libraries, remote assets, or API calls. The example traces and values are synthetic. The animation does not imply that the dashboard or roadmap features are already shipped.
+
+### Play the interactive version locally
+
+From the repository root, start a local static server:
+
+```bash
+python -m http.server 8000
+```
+
+Then open [http://localhost:8000/docs/agentglass-explainer.html](http://localhost:8000/docs/agentglass-explainer.html) in your browser. The player is designed for a 56-second walkthrough and can be controlled or stepped through chapter by chapter.
+
 ## What you can do today
 
 | Capability | Current implementation |
