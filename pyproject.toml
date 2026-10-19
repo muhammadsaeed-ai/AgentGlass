@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentglass"
+version = "0.1.0"
+description = "Local-first observability primitives for AI agent runs, spans, and tool calls."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "AgentGlass contributors" }]
+keywords = ["ai-agents", "llm-observability", "agent-tracing", "tool-calls", "developer-tools", "debugging", "jsonl"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Debuggers",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.scripts]
+agentglass = "agentglass.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["agentglass*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
