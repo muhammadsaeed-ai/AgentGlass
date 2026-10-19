@@ -4,6 +4,7 @@
 
 <p><strong>Trace the work. Find the failure. Keep the evidence.</strong></p>
 <p>A local-first Python toolkit for recording AI-agent runs, tool calls, spans, and failures as structured events.</p>
+<p><sub>Built and maintained by <a href="https://verityagent.lovable.app"><strong>VerityAgent</strong></a> · AI agents, automation, and developer tools</sub></p>
 
 <p>
   <a href="https://github.com/muhammadsaeed-ai/AgentGlass/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/muhammadsaeed-ai/AgentGlass/ci.yml?branch=main&style=for-the-badge&label=BUILD" alt="Build status" /></a>
