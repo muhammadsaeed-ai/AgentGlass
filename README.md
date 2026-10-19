@@ -28,32 +28,28 @@
 <tr>
 <td width="50%" valign="top">
 
-### ◈ Built for debugging
-
-Follow the observable sequence across a run: start, operation, tool result, and terminal status.
+<h3>◈ Built for debugging</h3>
+<p>Follow the observable sequence across a run: start, operation, tool result, and terminal status.</p>
 
 </td>
 <td width="50%" valign="top">
 
-### ◈ Local by default
-
-Write traces to memory or local JSONL. The AgentGlass library makes no network calls.
+<h3>◈ Local by default</h3>
+<p>Write traces to memory or local JSONL. The AgentGlass library makes no network calls.</p>
 
 </td>
 </tr>
 <tr>
 <td width="50%" valign="top">
 
-### ◈ Evidence, not guesses
-
-Durations come from recorded operations. Usage and cost are not invented when provider data is absent.
+<h3>◈ Evidence, not guesses</h3>
+<p>Durations come from recorded operations. Usage and cost are not invented when provider data is absent.</p>
 
 </td>
 <td width="50%" valign="top">
 
-### ◈ Deliberate data handling
-
-Redact common secrets before storage, bound oversized values, and validate malformed event records.
+<h3>◈ Deliberate data handling</h3>
+<p>Redact common secrets before storage, bound oversized values, and validate malformed event records.</p>
 
 </td>
 </tr>
