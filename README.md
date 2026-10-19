@@ -1,114 +1,131 @@
 <div align="center">
 
-<img src="assets/readme/agentglass-hero.svg" alt="AgentGlass — local-first AI agent observability" width="100%" />
+<img src="assets/readme/agentglass-hero.svg" alt="AgentGlass — Make every run inspectable" width="100%" />
 
-<p><strong>Make every run inspectable.</strong></p>
-<p>Local-first tracing primitives for AI agent workflows — lifecycle events, tool-call context, failure capture, and JSONL inspection.</p>
+<p><strong>Trace the work. Find the failure. Keep the evidence.</strong></p>
+<p>A local-first Python toolkit for recording AI-agent runs, tool calls, spans, and failures as structured events.</p>
 
 <p>
-  <a href="https://github.com/muhammadsaeed-ai/AgentGlass/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/muhammadsaeed-ai/AgentGlass/ci.yml?branch=main&style=for-the-badge&label=CI" alt="CI status" /></a>
+  <a href="https://github.com/muhammadsaeed-ai/AgentGlass/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/muhammadsaeed-ai/AgentGlass/ci.yml?branch=main&style=for-the-badge&label=BUILD" alt="Build status" /></a>
   <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11+" />
-  <img src="https://img.shields.io/badge/runtime%20dependencies-zero-24B89A?style=for-the-badge" alt="Zero runtime dependencies" />
-  <img src="https://img.shields.io/badge/license-MIT-8274F7?style=for-the-badge" alt="MIT license" />
+  <img src="https://img.shields.io/badge/runtime%20deps-0-20B99A?style=for-the-badge" alt="Zero runtime dependencies" />
+  <img src="https://img.shields.io/badge/license-MIT-8B7CFF?style=for-the-badge" alt="MIT license" />
 </p>
 
-<p><a href="#-quick-start">Quick start</a> · <a href="#-api-at-a-glance">API</a> · <a href="docs/architecture.md">Architecture</a> · <a href="docs/event-schema.md">Event schema</a> · <a href="docs/privacy-security.md">Privacy model</a></p>
+<p>
+  <a href="#-quick-start">Quick start</a> ·
+  <a href="#-what-you-can-do-today">Capabilities</a> ·
+  <a href="#-how-the-trace-flows">Trace flow</a> ·
+  <a href="docs/architecture.md">Architecture</a> ·
+  <a href="docs/privacy-security.md">Security</a>
+</p>
 
 </div>
 
 ---
 
-> **Status: early MVP / alpha.** The repository now includes a runnable Python recorder, versioned event validation, local stores, best-effort redaction, CLI trace inspection, and tests. It does **not** yet ship a web dashboard, hosted collector, or framework-specific auto-instrumentation. Architecture visuals show the implemented core and explicitly marked future modules.
-
-## Why AgentGlass?
-
-Agent runs can involve model requests, tool calls, intermediate operations, retries, errors, and outputs. A final answer alone does not show where time was spent or which observable step failed. AgentGlass provides a small event contract and local trace workflow that developers can embed in an application without sending trace data to a hosted service.
-
 <table>
-<tr><td width="50%" valign="top">
+<tr>
+<td width="50%" valign="top">
 
-### 🔎 Follow the observable path
+### ◈ Built for debugging
 
-Use run, span, and tool context managers to capture ordered events, related start/end IDs, duration, status, and application-provided attributes.
+Follow the observable sequence across a run: start, operation, tool result, and terminal status.
 
-</td><td width="50%" valign="top">
+</td>
+<td width="50%" valign="top">
 
-### 🛡️ Redact before storage
+### ◈ Local by default
 
-The default redactor masks common credential/PII keys and several recognizable token/email patterns, bounds payloads, and avoids serializing arbitrary object representations.
+Write traces to memory or local JSONL. The AgentGlass library makes no network calls.
 
-</td></tr>
-<tr><td width="50%" valign="top">
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
 
-### 🗂️ Keep traces local
+### ◈ Evidence, not guesses
 
-Use the in-memory store for tests or append events to a UTF-8 JSONL file for inspection, diffing, and bug-report workflows.
+Durations come from recorded operations. Usage and cost are not invented when provider data is absent.
 
-</td><td width="50%" valign="top">
+</td>
+<td width="50%" valign="top">
 
-### 🧪 Validate the evidence
+### ◈ Deliberate data handling
 
-Typed event vocabulary, timezone-aware timestamps, schema versioning, readable validation errors, and CI tests help catch malformed traces instead of silently skipping them.
+Redact common secrets before storage, bound oversized values, and validate malformed event records.
 
-</td></tr>
+</td>
+</tr>
 </table>
 
-## ✨ Visual workflow
+## A glimpse of the trace experience
 
-<p align="center"><img src="assets/readme/workflow.svg" alt="AgentGlass workflow: record, normalize, protect, inspect" width="100%" /></p>
+<p align="center">
+  <img src="assets/readme/trace-preview.svg" alt="Animated AgentGlass trace viewer concept showing a synthetic run, tool events and execution sequence" width="100%" />
+</p>
 
-## 🧭 Architecture
+<p align="center"><sub>Illustrative UI concept using synthetic events — not a shipped web dashboard. The implemented interface today is the Python SDK and command-line inspector.</sub></p>
 
-<p align="center"><img src="assets/readme/architecture.svg" alt="AgentGlass architecture: application instrumentation through events, redaction, storage, and CLI inspection. Future adapters are marked as not implemented." width="100%" /></p>
+## What you can do today
 
-For the fuller system boundaries and planned adapter approach, read [docs/architecture.md](docs/architecture.md).
+| Capability | Current implementation |
+|---|---|
+| Run lifecycle | Start, complete, fail, or cancel a recorded run |
+| Spans and tools | Record start/end events, duration, output metadata, and errors |
+| Event contract | Validate typed event kinds, timezone-aware timestamps, IDs, and schema version |
+| Redaction | Mask common credential keys, recognizable token patterns, and emails before persistence |
+| Local storage | In-memory store and append-only JSONL file store |
+| CLI | Create a synthetic trace, inspect events, validate files, and summarize runs |
+| Quality checks | Unit tests and GitHub Actions on Python 3.11 and 3.12 |
 
-## 🚀 Quick start
+**Honest project status:** AgentGlass is an early-stage, usable tracing core. A live browser dashboard, automatic integrations for specific agent frameworks, hosted ingestion, and token-cost analytics are planned—not shipped.
 
-Requires **Python 3.11 or newer**. Runtime package dependencies: **none**.
+## How the trace flows
 
-### 1. Install from a clone
+<p align="center">
+  <img src="assets/readme/workflow.svg" alt="Animated AgentGlass workflow: record, normalize, protect, inspect" width="100%" />
+</p>
 
-\`\`\`bash
+The application runs its own model requests and tools. AgentGlass records the observations your code explicitly passes to it; it does not execute tools, automatically instrument every provider, or expose hidden model reasoning.
+
+## Quick start
+
+**Requirements:** Python 3.11 or later. No runtime dependencies.
+
+### 1. Install
+
+```bash
 git clone https://github.com/muhammadsaeed-ai/AgentGlass.git
 cd AgentGlass
 python -m pip install .
-\`\`\`
+```
 
-For development, use \`python -m pip install -e .\`.
+### 2. Generate a local example
 
-### 2. Generate a synthetic trace
-
-\`\`\`bash
+```bash
 agentglass demo --output traces/demo.jsonl
-\`\`\`
+```
 
-This command creates a repeatable **synthetic/offline demo**. It does not call an AI model, connect an agent framework, or send data over the network.
+This creates a **synthetic offline trace**. It does not call an LLM, contact an agent framework, or send trace data to a service.
 
-### 3. Inspect, validate, and summarize
+### 3. Inspect it
 
-\`\`\`bash
+```bash
 agentglass inspect traces/demo.jsonl
 agentglass validate traces/demo.jsonl
 agentglass summary traces/demo.jsonl
-\`\`\`
+```
 
-Equivalent module commands work without installing the console entry point:
+## Instrument a workflow
 
-\`\`\`bash
-python -m agentglass demo --output traces/demo.jsonl
-python -m agentglass inspect traces/demo.jsonl
-\`\`\`
+Wrap the operation you want to observe. Your application still executes the tool and supplies its real result.
 
-## 🧩 API at a glance
-
-Instrument an operation at the point where your application has a real observation. AgentGlass records the context; your application still executes the model request and tool itself.
-
-\`\`\`python
+```python
 from agentglass import AgentGlass, EventType, JSONLStore
 
 client = AgentGlass(
-    store=JSONLStore("traces/agent.jsonl"),
+    store=JSONLStore("traces/assistant.jsonl"),
     service_name="knowledge-assistant",
 )
 
@@ -116,144 +133,123 @@ with client.start_run(attributes={"workflow": "knowledge_lookup"}) as run:
     run.record(
         EventType.MODEL_REQUEST,
         name="planner",
-        attributes={"provider": "example-provider", "model": "example-model"},
+        attributes={"provider": "your-provider", "model": "your-model"},
     )
 
-    # Place this context manager around your real tool implementation.
-    with run.tool(
-        "docs.search",
-        input={"query": "agent observability"},
-        attributes={"system": "internal-docs"},
-    ) as tool:
-        result = {"matches": 3}  # Replace with the real observed result.
+    with run.tool("docs.search", input={"query": "agent tracing"}) as tool:
+        result = {"matches": 3}  # Replace with your real tool call.
         tool.set_output(result)
 
-    run.record(
-        EventType.MODEL_RESPONSE,
-        name="planner",
-        attributes={"finish_reason": "stop"},
-    )
-\`\`\`
+    run.record(EventType.MODEL_RESPONSE, name="planner")
+```
 
-### What the recorder writes
+<details>
+<summary><strong>See the event sequence and CLI commands</strong></summary>
 
-The example produces a sequence similar to:
+A typical instrumented run records a sequence resembling:
 
-<pre>
+```text
 run.started
-custom            name="run.metadata"       # only when run attributes were supplied
-model.request     name="planner"
-tool.started      name="docs.search"
-tool.completed    name="docs.search"        duration_ms + parent_event_id
-model.response    name="planner"
+custom            run.metadata        # only when run attributes are supplied
+model.request     planner
+tool.started      docs.search
+tool.completed   docs.search         # duration + parent event ID
+model.response    planner
 run.completed
-</pre>
+```
 
-Every persisted event has a run ID, event ID, zero-based sequence, timezone-aware timestamp, event type, status, attributes, and schema version. The tool context manager emits start and terminal events, measures elapsed duration, links the terminal event to its start event, and records/re-raises exceptions.
-
-### Instrument a general operation
-
-\`\`\`python
-with run.span("retrieve_documents", kind="retrieval", attributes={"index": "handbook"}) as span:
-    documents = retrieve_documents()  # Your application's function
-    span.set_output({"document_count": len(documents)})
-\`\`\`
-
-Use \`run.record(...)\` for explicit model events, retries, or supported custom events. See [the schema contract](docs/event-schema.md) for the event vocabulary and JSON fields.
-
-## 🧰 CLI reference
+The CLI supports:
 
 | Command | Purpose |
 |---|---|
-| \`agentglass demo --output PATH\` | Write synthetic trace events locally |
-| \`agentglass inspect PATH\` | Print a readable event timeline |
-| \`agentglass inspect PATH --run-id ID\` | Inspect one run |
-| \`agentglass validate PATH\` | Validate each non-empty JSONL line |
-| \`agentglass summary PATH\` | Group event types by run |
-| \`agentglass --version\` | Print installed package version |
-| \`agentglass --help\` | Show command help |
+| <code>agentglass demo --output PATH</code> | Write synthetic events |
+| <code>agentglass inspect PATH</code> | Print the event timeline |
+| <code>agentglass inspect PATH --run-id ID</code> | Filter to one run |
+| <code>agentglass validate PATH</code> | Validate every non-empty JSONL record |
+| <code>agentglass summary PATH</code> | Group events by run and event kind |
 
-Malformed lines and invalid schema values are reported with a path/line reference rather than silently dropped.
+</details>
 
-## 🔐 Privacy and data handling
+## Architecture
 
-AgentGlass is **local-first**, but a local trace can still contain confidential data.
+<p align="center">
+  <img src="assets/readme/architecture.svg" alt="AgentGlass architecture showing instrumentation, normalized events, redaction, local storage, and CLI readers" width="100%" />
+</p>
 
-- Attribute values pass through recursive, best-effort redaction before persistence by the provided recorder.
-- Common secret-bearing keys, recognizable bearer/API token patterns, and email addresses are masked by default.
-- Text length, nesting depth, and collection size are bounded to help constrain unexpected payloads.
-- Events describe data explicitly passed by your application; the library does not reveal hidden model reasoning.
-- The redactor is not a complete DLP solution. Avoid collecting sensitive input at source, keep trace files private, and inspect exports before sharing them.
+The core is intentionally small:
 
-Read [docs/privacy-security.md](docs/privacy-security.md) and [SECURITY.md](SECURITY.md). Do not commit production traces, credentials, customer records, or private prompts.
+1. **Record** observations through run, span, and tool context managers.
+2. **Normalize** them into a versioned <code>TraceEvent</code> shape.
+3. **Redact** common sensitive values and bound payload size before the store receives an event.
+4. **Persist** structured JSONL locally or keep events in memory.
+5. **Inspect** the same schema using CLI readers.
 
-## 🧪 Development and tests
+## Privacy and reliability
 
-\`\`\`bash
+- Redaction is a **best-effort safety net**, not a complete data-loss-prevention system.
+- Local trace files may still contain confidential business context. Review exports before sharing them.
+- Use synthetic fixtures in issues and pull requests; never commit credentials or customer traces.
+- Malformed JSONL records are reported with a path and line number rather than silently ignored.
+- The library does not send telemetry or upload traces.
+
+Read the [privacy and security model](docs/privacy-security.md) and [security policy](SECURITY.md).
+
+## Development
+
+```bash
 python -m unittest discover -s tests -v
 python -m agentglass demo --output traces/demo.jsonl
 python -m agentglass validate traces/demo.jsonl
-\`\`\`
+```
 
-The test suite covers event schema round-trips and validation, nested redaction, run/tool/span lifecycle behavior, JSONL persistence, corrupt-line reporting, and CLI commands. GitHub Actions runs the tests on Python 3.11 and 3.12.
+The test suite covers event validation, redaction, run/span/tool lifecycle behavior, JSONL persistence, malformed records, and CLI operations.
 
-## 🗃️ Repository map
+<details>
+<summary><strong>Repository layout</strong></summary>
 
-\`\`\`text
+```text
 AgentGlass/
 ├── agentglass/
-│   ├── models.py          # versioned event contract and validation
-│   ├── recorder.py        # run, span, tool lifecycle instrumentation
-│   ├── redaction.py       # recursive masking and payload bounds
-│   ├── storage.py         # in-memory and local JSONL stores
-│   ├── cli.py             # demo / inspect / validate / summary
+│   ├── models.py          # Versioned event contract
+│   ├── recorder.py        # Run, span, and tool instrumentation
+│   ├── redaction.py       # Secret masking and payload bounds
+│   ├── storage.py         # Memory and JSONL stores
+│   ├── cli.py             # Demo, inspect, validate, summary
 │   └── __main__.py        # python -m agentglass
-├── assets/readme/
-│   ├── agentglass-hero.svg
-│   ├── workflow.svg
-│   ├── architecture.svg
-│   └── progress-loop.gif
-├── docs/
-│   ├── architecture.md
-│   ├── event-schema.md
-│   └── privacy-security.md
+├── assets/readme/         # Hero and animated architecture visuals
+├── docs/                  # Architecture, schema, privacy
 ├── tests/
-├── .github/workflows/ci.yml
-├── pyproject.toml
-├── CONTRIBUTING.md
-├── SECURITY.md
-└── LICENSE
-\`\`\`
+└── .github/workflows/     # Python 3.11 / 3.12 CI
+```
 
-## 🗺️ Roadmap
+</details>
 
-- [x] Versioned, validated event schema (v1.0)
-- [x] Local run/span/tool recorder with exception capture
-- [x] Recursive best-effort redaction and payload bounds
-- [x] In-memory store and append-only JSONL store
-- [x] Synthetic offline demo plus inspect/validate/summary CLI
-- [x] Standard-library test suite and CI for Python 3.11 / 3.12
-- [ ] Richer query filters, trace grouping, and structured export options
-- [ ] Optional adapter for one selected agent framework with fixture-based contract tests
-- [ ] Interactive local timeline UI backed by real trace files
-- [ ] Measured token/cost attribution where reliable provider usage data exists
-- [ ] Threat-model review before any hosted ingestion or multi-user service
+## Roadmap
 
-Roadmap items are intentions, not shipped capabilities. Contributions should keep this distinction clear.
+- [x] Versioned event model and local recorder
+- [x] Span/tool timing and failure events
+- [x] Local JSONL persistence and CLI inspection
+- [x] Best-effort redaction and payload bounds
+- [x] Unit tests and CI for Python 3.11 / 3.12
+- [ ] Improved trace filtering and structured export
+- [ ] One framework adapter with real integration tests
+- [ ] Interactive local dashboard backed by real trace files
+- [ ] Trusted usage metadata for measured token and cost attribution
+- [ ] Separate threat-model review before any hosted or multi-user service
 
-## 🤝 Contributing
+## Contributing
 
-Issues, schema design feedback, synthetic fixtures, and focused code improvements are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), keep examples free of real customer data, and include automated tests for behavior changes.
+Bug reports, schema feedback, synthetic fixtures, and focused pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md). Roadmap items must remain clearly distinguished from implemented capabilities.
 
-## 🔍 Topics
+## Topics
 
-Suggested repository topics: \`ai-agent-observability\`, \`llm-observability\`, \`agent-tracing\`, \`ai-agents\`, \`tool-call-tracing\`, \`llm-monitoring\`, \`agent-debugging\`, \`python\`, \`developer-tools\`, \`jsonl\`, \`open-source\`.
+<code>ai-agent-observability</code> · <code>llm-observability</code> · <code>agent-tracing</code> · <code>tool-call-tracing</code> · <code>ai-agents</code> · <code>python</code> · <code>developer-tools</code> · <code>llm-monitoring</code>
 
-These terms describe the project scope; discoverability and search ranking are not guaranteed.
+<div align="center">
 
 ---
 
-<div align="center">
-<strong>AgentGlass</strong> · Inspect the events you can observe. Keep control of the data you record.
-<p><sub>Open source · Local-first · Early alpha</sub></p>
+<strong>AgentGlass</strong><br/>
+<sub>Observe what happened. Trace what failed. Keep control of your data.</sub>
+
 </div>

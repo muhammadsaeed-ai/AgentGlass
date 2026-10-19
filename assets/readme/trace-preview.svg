@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="650" viewBox="0 0 1280 650" role="img" aria-labelledby="title desc">
+<title id="title">AgentGlass synthetic trace viewer concept</title>
+<desc id="desc">A premium dark observability user-interface concept showing a synthetic run summary, event timeline, trace steps, timings and a tool result. It is illustrative and not a shipped web dashboard.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#070D18"/><stop offset=".58" stop-color="#0B1424"/><stop offset="1" stop-color="#14152B"/></linearGradient>
+  <linearGradient id="mint" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#56F0D0"/><stop offset="1" stop-color="#69D8FF"/></linearGradient>
+  <linearGradient id="violet" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8D87FF"/><stop offset="1" stop-color="#C2A4FF"/></linearGradient>
+  <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#A6BDD9" stroke-opacity=".045"/></pattern>
+  <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#000711" flood-opacity=".35"/></filter>
+  <clipPath id="clip"><rect width="1280" height="650" rx="24"/></clipPath>
+</defs>
+<g clip-path="url(#clip)" font-family="Inter,Segoe UI,Arial,sans-serif">
+  <rect width="1280" height="650" rx="24" fill="url(#bg)"/><rect width="1280" height="650" fill="url(#grid)"/>
+  <circle cx="1060" cy="100" r="280" fill="#3CBAF4" opacity=".055"><animate attributeName="opacity" values=".035;.075;.035" dur="5s" repeatCount="indefinite"/></circle>
+  <rect x="1" y="1" width="1278" height="648" rx="23" fill="none" stroke="#8299B9" stroke-opacity=".25"/>
+  <rect x="0" y="0" width="1280" height="65" fill="#0A1220" fill-opacity=".92"/><path d="M0 65H1280" stroke="#40516B" stroke-opacity=".55"/>
+  <g transform="translate(28 18)"><rect width="30" height="30" rx="9" fill="#10303B" stroke="#55E6D5" stroke-opacity=".7"/><path d="M6 16h6l4-8 5 16 4-8h3" fill="none" stroke="#72F5DF" stroke-width="1.8" stroke-linecap="round"/></g>
+  <text x="70" y="38" fill="#F0F7FF" font-size="17" font-weight="750">AgentGlass</text><text x="177" y="38" fill="#7187A6" font-size="11">TRACE VIEWER CONCEPT</text>
+  <rect x="923" y="18" width="144" height="29" rx="14.5" fill="#0E2B29" stroke="#38D9B5" stroke-opacity=".55"/><circle cx="940" cy="32.5" r="4" fill="#53EBCB"><animate attributeName="opacity" values=".45;1;.45" dur="2s" repeatCount="indefinite"/></circle><text x="951" y="37" fill="#A2F9E3" font-size="10" font-weight="700" letter-spacing=".6">LOCAL TRACE</text>
+  <rect x="1080" y="18" width="169" height="29" rx="14.5" fill="#1A2034" stroke="#8B90BB" stroke-opacity=".45"/><text x="1164" y="37" fill="#C5CBE0" font-size="10" font-weight="700" text-anchor="middle">SYNTHETIC EXAMPLE</text>
+  <text x="30" y="105" fill="#EEF6FF" font-size="25" font-weight="750" letter-spacing="-.5">Run inspection</text><text x="30" y="130" fill="#8297B4" font-size="12">Explore the observable sequence behind one agent task.</text>
+  <rect x="1025" y="88" width="222" height="36" rx="10" fill="#10251F" stroke="#3ED8B6" stroke-opacity=".48"/><circle cx="1044" cy="106" r="4.5" fill="#61EEC8"/><text x="1058" y="110" fill="#9DF2D8" font-size="11" font-weight="650">COMPLETED</text><text x="1229" y="110" text-anchor="end" fill="#C5D9D3" font-size="11">run_demo_7f2a</text>
+  <g filter="url(#shadow)">
+    <rect x="28" y="155" width="286" height="125" rx="16" fill="#0D1929" stroke="#3D5471" stroke-opacity=".7"/>
+    <rect x="330" y="155" width="286" height="125" rx="16" fill="#0D1929" stroke="#3D5471" stroke-opacity=".7"/>
+    <rect x="632" y="155" width="286" height="125" rx="16" fill="#0D1929" stroke="#3D5471" stroke-opacity=".7"/>
+    <rect x="934" y="155" width="314" height="125" rx="16" fill="#0D1929" stroke="#3D5471" stroke-opacity=".7"/>
+  </g>
+  <g>
+    <text x="48" y="183" fill="#8FA5C3" font-size="10" font-weight="700" letter-spacing="1.1">OBSERVED EVENTS</text><text x="48" y="226" fill="#F4FAFF" font-size="35" font-weight="750">7</text><text x="48" y="251" fill="#8298B5" font-size="11">One synthetic run</text><g transform="translate(243 197)" fill="#57E9CA"><rect x="0" y="26" width="6" height="15" rx="2"/><rect x="11" y="17" width="6" height="24" rx="2"/><rect x="22" y="4" width="6" height="37" rx="2"/><rect x="33" y="11" width="6" height="30" rx="2"/></g>
+    <text x="350" y="183" fill="#8FA5C3" font-size="10" font-weight="700" letter-spacing="1.1">TOOL EVENTS</text><text x="350" y="226" fill="#F4FAFF" font-size="35" font-weight="750">2</text><text x="350" y="251" fill="#8298B5" font-size="11">Start + completion</text><g transform="translate(552 207)"><rect width="40" height="32" rx="8" fill="#132D38" stroke="#44BED7" stroke-opacity=".6"/><path d="M11 10h18M11 16h13M11 22h16" stroke="#81E8F2" stroke-width="1.6" stroke-linecap="round"/></g>
+    <text x="652" y="183" fill="#8FA5C3" font-size="10" font-weight="700" letter-spacing="1.1">RUN STATUS</text><text x="652" y="226" fill="#E8FFF8" font-size="29" font-weight="750">Complete</text><text x="652" y="251" fill="#8298B5" font-size="11">Terminal event observed</text><circle cx="878" cy="218" r="15" fill="#10382F" stroke="#4EE2BB" stroke-opacity=".55"/><path d="M870 218l5 5 10-11" fill="none" stroke="#68F1CB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="954" y="183" fill="#8FA5C3" font-size="10" font-weight="700" letter-spacing="1.1">PERSISTENCE</text><text x="954" y="226" fill="#F4FAFF" font-size="29" font-weight="750">JSONL</text><text x="954" y="251" fill="#8298B5" font-size="11">Local file · no hosted collector</text><path d="M1192 201v33l13 8 13-8v-33l-13-7z" fill="#17213A" stroke="#9C93FF" stroke-opacity=".7"/><path d="M1197 214h16M1197 221h16M1197 228h10" stroke="#B7ADFF" stroke-width="1.3"/>
+  </g>
+  <rect x="28" y="304" width="774" height="300" rx="17" fill="#0A1422" stroke="#3C506D" stroke-opacity=".75"/>
+  <text x="50" y="334" fill="#F0F6FF" font-size="15" font-weight="700">Execution timeline</text><text x="50" y="354" fill="#7D92AF" font-size="11">SEQUENCE ORDER · SYNTHETIC DATA</text>
+  <rect x="616" y="318" width="162" height="25" rx="12.5" fill="#15233A"/><circle cx="631" cy="330.5" r="3.5" fill="#8E8AFF"/><text x="642" y="334" fill="#B9C8DF" font-size="10">SCHEMA 1.0</text>
+  <path d="M76 393V553" stroke="#3A5E75" stroke-width="2"/><path d="M76 393V553" stroke="url(#mint)" stroke-width="2" stroke-dasharray="3 10"><animate attributeName="stroke-dashoffset" from="0" to="-26" dur="2s" repeatCount="indefinite"/></path>
+  <g>
+    <circle cx="76" cy="394" r="6" fill="#5AE9CC" filter="url(#glow)"/><rect x="100" y="371" width="677" height="43" rx="9" fill="#0F202D" stroke="#285064" stroke-opacity=".7"/><text x="117" y="389" fill="#9BF2DB" font-size="11" font-weight="700">00</text><text x="145" y="389" fill="#E5F9F8" font-size="12" font-weight="650">run.started</text><text x="145" y="403" fill="#7896AC" font-size="10">Recorder initialized · local metadata</text><text x="756" y="396" text-anchor="end" fill="#86B8B6" font-size="10">START</text>
+    <circle cx="76" cy="445" r="6" fill="#8E8AFF" filter="url(#glow)"/><rect x="100" y="422" width="677" height="43" rx="9" fill="#131A32" stroke="#514E85" stroke-opacity=".7"/><text x="117" y="440" fill="#C0B9FF" font-size="11" font-weight="700">01</text><text x="145" y="440" fill="#EEEAFE" font-size="12" font-weight="650">model.request</text><text x="145" y="454" fill="#9395BD" font-size="10">Synthetic planner event · explicit instrumentation</text><text x="756" y="447" text-anchor="end" fill="#ACA6F7" font-size="10">MODEL</text>
+    <circle cx="76" cy="496" r="6" fill="#62D9FF" filter="url(#glow)"/><rect x="100" y="473" width="677" height="43" rx="9" fill="#0E202D" stroke="#2C6679" stroke-opacity=".75"/><text x="117" y="491" fill="#9BE9FF" font-size="11" font-weight="700">02</text><text x="145" y="491" fill="#E5F8FF" font-size="12" font-weight="650">tool.completed · docs.search</text><text x="145" y="505" fill="#83B2C4" font-size="10">Output captured from local fixture · duration recorded</text><text x="756" y="498" text-anchor="end" fill="#8FDFFF" font-size="10">TOOL</text>
+    <circle cx="76" cy="547" r="6" fill="#5AE9CC" filter="url(#glow)"/><rect x="100" y="524" width="677" height="43" rx="9" fill="#10251F" stroke="#2B6857" stroke-opacity=".75"/><text x="117" y="542" fill="#A2F6DA" font-size="11" font-weight="700">06</text><text x="145" y="542" fill="#E6FFF5" font-size="12" font-weight="650">run.completed</text><text x="145" y="556" fill="#7FBBA9" font-size="10">Successful terminal event written to local trace</text><text x="756" y="549" text-anchor="end" fill="#A2F6DA" font-size="10">END</text>
+  </g>
+  <rect x="820" y="304" width="428" height="300" rx="17" fill="#0A1422" stroke="#3C506D" stroke-opacity=".75"/>
+  <text x="842" y="334" fill="#F0F6FF" font-size="15" font-weight="700">Selected event</text><text x="842" y="354" fill="#7D92AF" font-size="11">TOOL COMPLETION · EXAMPLE PAYLOAD</text>
+  <rect x="842" y="375" width="384" height="39" rx="9" fill="#122B36" stroke="#3D9DAB" stroke-opacity=".75"/><circle cx="859" cy="394" r="4" fill="#60E8D1"/><text x="874" y="398" fill="#B9FBED" font-size="12" font-weight="650">docs.search</text><text x="1208" y="398" text-anchor="end" fill="#82CFE0" font-size="10">STATUS: OK</text>
+  <text x="842" y="440" fill="#7D92AF" font-size="10" font-weight="700" letter-spacing="1">OBSERVED ATTRIBUTES</text>
+  <g font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="11">
+    <text x="846" y="466" fill="#A5B6CF">tool_name</text><text x="941" y="466" fill="#8CECD4">"docs.search"</text>
+    <text x="846" y="493" fill="#A5B6CF">status</text><text x="941" y="493" fill="#8CECD4">"ok"</text>
+    <text x="846" y="520" fill="#A5B6CF">output</text><text x="941" y="520" fill="#D3CCFF">{"matches": 3}</text>
+    <text x="846" y="547" fill="#A5B6CF">source</text><text x="941" y="547" fill="#D3CCFF">"local fixture"</text>
+  </g>
+  <rect x="842" y="565" width="384" height="22" rx="6" fill="#24213A"/><text x="1034" y="580" fill="#B7B0FF" font-size="10" font-weight="650" text-anchor="middle">ILLUSTRATIVE CONCEPT · NOT A LIVE DASHBOARD</text>
+  <text x="30" y="627" fill="#637894" font-size="10" letter-spacing=".8">AGENTGLASS / OBSERVABLE EVENTS ONLY / LOCAL-FIRST</text><text x="1248" y="627" fill="#637894" font-size="10" text-anchor="end">UI DIRECTION · SYNTHETIC EXAMPLE</text>
+</g>
+</svg>
