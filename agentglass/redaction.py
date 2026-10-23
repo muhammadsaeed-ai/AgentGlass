@@ -9,7 +9,8 @@ _REDACTED = "[REDACTED]"
 _SENSITIVE_KEY = re.compile(
     r"(?:password|passwd|secret|api[_-]?key|access[_-]?token|refresh[_-]?token|"
     r"authorization|cookie|credential|private[_-]?key|client[_-]?secret|"
-    r"session[_-]?token|ssn|email|phone[_-]?(?:number)?)",
+    r"session[_-]?token|(?:^|[_-])(?:id[_-]?)?token(?:$|[_-])|"
+    r"(?:^|[_-])jwt(?:$|[_-])|ssn|email|phone[_-]?(?:number)?)",
     re.IGNORECASE,
 )
 _EMAIL = re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.IGNORECASE)
