@@ -7,7 +7,7 @@
 <p><sub>Built and maintained by <a href="https://verityagent.lovable.app"><strong>VerityAgent</strong></a> · AI agents, automation, and developer tools</sub></p>
 
 <p>
-  <a href="https://github.com/muhammadsaeed-ai/AgentGlass/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/muhammadsaeed-ai/AgentGlass/ci.yml?branch=main&style=for-the-badge&label=BUILD" alt="Build status" /></a>
+  <a href="https://github.com/muhammadsaeed-ai/verity-agentglass/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/muhammadsaeed-ai/AgentGlass/ci.yml?branch=main&style=for-the-badge&label=BUILD" alt="Build status" /></a>
   <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.11+" />
   <img src="https://img.shields.io/badge/runtime%20deps-0-20B99A?style=for-the-badge" alt="Zero runtime dependencies" />
   <img src="https://img.shields.io/badge/license-MIT-8B7CFF?style=for-the-badge" alt="MIT license" />
@@ -117,7 +117,7 @@ The application runs its own model requests and tools. AgentGlass records the ob
 ### 1. Install
 
 ```bash
-git clone https://github.com/muhammadsaeed-ai/AgentGlass.git
+git clone https://github.com/muhammadsaeed-ai/verity-agentglass.git
 cd AgentGlass
 python -m pip install .
 ```
