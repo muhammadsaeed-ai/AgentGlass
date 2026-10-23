@@ -12,6 +12,23 @@ class RedactorTests(unittest.TestCase):
         self.assertEqual(result["password"], "[REDACTED]")
         self.assertEqual(source["password"], "pw")
 
+
+    def test_redacts_generic_token_and_jwt_fields(self):
+        result = Redactor().sanitize({
+            "token": "opaque-token-value",
+            "id_token": "id-token-value",
+            "api_token": "api-token-value",
+            "jwt": "jwt-value",
+            "token_count": 3,
+            "tokenizer": "keep-nonsecret-metadata",
+        })
+        self.assertEqual(result["token"], "[REDACTED]")
+        self.assertEqual(result["id_token"], "[REDACTED]")
+        self.assertEqual(result["api_token"], "[REDACTED]")
+        self.assertEqual(result["jwt"], "[REDACTED]")
+        self.assertEqual(result["token_count"], "[REDACTED]")
+        self.assertEqual(result["tokenizer"], "keep-nonsecret-metadata")
+
     def test_redacts_secret_patterns_and_email(self):
         result = Redactor().sanitize({
             "message": "contact dev@example.com; key sk-abcdefghijklmnop; auth Bearer abcdefghijklmnop",
